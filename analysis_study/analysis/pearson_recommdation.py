@@ -52,7 +52,14 @@ class recommdator():
 		den = sqrt((sum_sq1 - pow(sum1, 2)/n)*(sum_sq2 - pow(sum2, 2)/n))
 		return 0 if (den == 0) else (num / den)
 
+	def top_matched(self, person, n=5, similarity=pearson):
+		scores = [(similarity(self, person, other), other) for other in self.critics if other != person]
+		scores.sort()
+		scores.reverse()
+		return scores[0:n]
+
 	if __name__ == "__main__":
 		from analysis.pearson_recommdation import recommdator, critics
 		pear = recommdator(critics)
-		print "Our Similarity: %s" % pearson(pear, 'Lisa Rose', 'Gene Seymour')
+		# print pear.pearson('Lisa Rose','Toby')
+		print "Our Similarity: %s" % pear.top_matched('Lisa Rose')
